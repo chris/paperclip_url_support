@@ -27,10 +27,6 @@ whatever named attribute you're using for Paperclip) to the URLTempfile:
 That's it, from there on, the regular Paperclip file handling/functionality
 takes over and stores your file, makes thumbnails or what not.
 
-h2. Issues
+h2. Warning!
 
-* This code currently does not follow redirects.
-* It assumes the presence of OpenSSL for Ruby, and thus 'net/https', to support HTTPS downloads.
-* For HTTPS downloads, it does not do certificate checking.
-* It currently uses the @identify@ command line application from ImageMagick to determine the MIME type of the file.  If you're on Windows, or this is not in your path, it will fail.  The suggested solution is to augment the code to detect if identify is there, and if not, checking the content type in the HTTP response, or try using the file extension from the URL if available.
-* Much more error checking and such is needed.
+The implementation uses open-uri, which does not provide a way to turn off SSL certificate validation for a request.  This code has a hack to temporarily set no certification validation *globally* for OpenSSL while the file is downloaded.  But BEWARE, this means that if you have other HTTPS requests that need certificate validation occurring at the same time, they will be affected.  If you have a better solution, please do share/submit a pull request!
