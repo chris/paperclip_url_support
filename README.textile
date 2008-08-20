@@ -2,9 +2,8 @@ h2. Description
 
 *URLTempfile* is a descendent of Tempfile that creates a temp file from the 
 data/response body of an HTTP GET request to the specified URL.  This code was
-designed to be used with the Paperclip Rails plugin:
-
-  http://github.com/thoughtbot/paperclip/tree/master
+designed to be used with the 
+"Paperclip":http://github.com/thoughtbot/paperclip/tree/master Rails plugin.
   
 Note, I consider this somewhat of a hack right now.  It's being used in a
 production application, but you should review the code prior to your own
