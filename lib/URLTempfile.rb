@@ -21,7 +21,7 @@ class URLTempfile < Tempfile
     begin
       # HACK to get around inability to set VERIFY_NONE with open-uri
       old_verify_peer_value = OpenSSL::SSL::VERIFY_PEER
-      OpenSSL::SSL.const_set("VERIFY_PEER", OpenSSL::SSL::VERIFY_NONE)
+      openssl_verify_peer = OpenSSL::SSL::VERIFY_NONE
       
       super('urlupload')
       Kernel.open(url) do |file|
@@ -32,7 +32,7 @@ class URLTempfile < Tempfile
         self.flush
       end
     ensure
-      OpenSSL::SSL.const_set("VERIFY_PEER", old_verify_peer_value)
+      openssl_verify_peer = old_verify_peer_value
     end
   end
   
@@ -41,5 +41,13 @@ class URLTempfile < Tempfile
     # to be filename (URI path already removes any query string)
     match = @url.path.match(/^.*\/(.+)$/)
     return (match ? match[1] : nil)
+  end
+  
+  protected
+  
+  def openssl_verify_peer=(value)
+    silence_warnings do
+      OpenSSL::SSL.const_set("VERIFY_PEER", value)
+    end
   end
 end
